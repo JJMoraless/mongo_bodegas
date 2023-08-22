@@ -31,6 +31,9 @@ router.get("/", async (req, res) => {
           totalUnidades: { $sum: "$cantidad" },
         },
       },
+      {
+        $sort: { totalUnidades: -1 }, // Ordena en orden descendente por totalUnidades
+      },
     ]).toArray();
     res.json({ ok: true, productos });
   } catch (error) {
