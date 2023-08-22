@@ -14,4 +14,13 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.get("/", async (req, res) => {
+  try {
+    const bodegasFind = await Bodegas.find().sort({ nombre: 1 }).toArray();
+    res.status(200).json({ ok: true, bodegas: bodegasFind });
+  } catch (error) {
+    console.log("🚀 ~ file: bodegas.routes.js:18 ~ router.get ~ error:", error);
+    res.status(500).json({ error });
+  }
+});
 export { router };
