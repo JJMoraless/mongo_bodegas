@@ -1,5 +1,60 @@
 import db from "./conection.js";
 
+/* -------------------------------------------------------------------------- */
+/*                                   bodegas                                  */
+/* -------------------------------------------------------------------------- */
+import db from "./conection.js";
+await db.createCollection("bodegas", {
+  validator: {
+    $jsonSchema: {
+      bsonType: "object",
+      required: ["nombre", "id_responsable", "estado"],
+      properties: {
+        id: {
+          bsonType: "int",
+          description: "El ID de la bodega",
+        },
+        nombre: {
+          bsonType: ["string", "null"],
+          description: "El nombre de la bodega",
+        },
+        id_responsable: {
+          bsonType: ["int", "null"],
+          description: "ID del responsable de la bodega",
+        },
+        estado: {
+          bsonType: ["int", "null"],
+          description: "El estado de la bodega",
+        },
+        created_by: {
+          bsonType: ["int", "null"],
+          description: "ID del creador de la bodega",
+        },
+        updated_by: {
+          bsonType: ["int", "null"],
+          description: "ID del usuario que actualizó la bodega",
+        },
+        created_at: {
+          bsonType: ["date", "null", "string"],
+          description: "Fecha de creación de la bodega",
+        },
+        updated_at: {
+          bsonType: ["date", "null", "string"],
+          description: "Fecha de actualización de la bodega",
+        },
+        deleted_at: {
+          bsonType: ["date", "null", "string"],
+          description: "Fecha de eliminación de la bodega",
+        },
+      },
+    },
+  },
+});
+
+/* -------------------------------------------------------------------------- */
+/*                                  productos                                 */
+/* -------------------------------------------------------------------------- */
+import db from "./conection.js";
 await db.createCollection("productos", {
   validator: {
     $jsonSchema: {
@@ -7,11 +62,11 @@ await db.createCollection("productos", {
       required: ["nombre", "descripcion", "estado", "created_by"],
       properties: {
         id: {
-          bsonType: ["long", "null"],
+          bsonType: ["int"],
           description: "El ID del producto",
         },
         nombre: {
-          bsonType: ["string", "null"],
+          bsonType: ["string"],
           description: "El nombre del producto",
         },
         descripcion: {
@@ -23,7 +78,7 @@ await db.createCollection("productos", {
           description: "El estado del producto",
         },
         created_by: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID del creador del producto",
         },
         updated_by: {
@@ -31,15 +86,15 @@ await db.createCollection("productos", {
           description: "ID del usuario que actualizó el producto",
         },
         created_at: {
-          bsonType: ["date", "null"],
+          bsonType: ["date", "null", "string"],
           description: "Fecha de creación del producto",
         },
         updated_at: {
-          bsonType: ["date", "null"],
+          bsonType: ["date", "null", "string"],
           description: "Fecha de actualización del producto",
         },
         deleted_at: {
-          bsonType: ["date", "null"],
+          bsonType: ["date", "null", "string"],
           description: "Fecha de eliminación del producto",
         },
       },
@@ -47,6 +102,11 @@ await db.createCollection("productos", {
   },
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                 historiales                                */
+/* -------------------------------------------------------------------------- */
+
+import db from "./conection.js";
 await db.createCollection("historiales", {
   validator: {
     $jsonSchema: {
@@ -54,35 +114,35 @@ await db.createCollection("historiales", {
       required: ["cantidad", "created_by"],
       properties: {
         id: {
-          bsonType: "long",
+          bsonType: ["int", "null"],
           description: "El ID del historial",
         },
         cantidad: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "La cantidad en el historial",
         },
         id_bodega_origen: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID de la bodega de origen",
         },
         id_bodega_destino: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID de la bodega de destino",
         },
         id_inventario: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID del inventario relacionado",
         },
         created_by: {
-          bsonType: "long",
+          bsonType: ["int", "null"],
           description: "ID del creador del historial",
         },
         updated_by: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID del usuario que actualizó el historial",
         },
         created_at: {
-          bsonType: "date",
+          bsonType: ["date", "null"],
           description: "Fecha de creación del historial",
         },
         updated_at: {
@@ -98,6 +158,11 @@ await db.createCollection("historiales", {
   },
 });
 
+/* -------------------------------------------------------------------------- */
+/*                                 inventarios                                */
+/* -------------------------------------------------------------------------- */
+
+import db from "./conection.js";
 await db.createCollection("inventarios", {
   validator: {
     $jsonSchema: {
@@ -105,39 +170,39 @@ await db.createCollection("inventarios", {
       required: ["id_bodega", "id_producto", "cantidad", "created_by"],
       properties: {
         id: {
-          bsonType: "long",
+          bsonType: "int",
           description: "El ID del inventario",
         },
         id_bodega: {
-          bsonType: "long",
+          bsonType: ["int", "null"],
           description: "ID de la bodega relacionada",
         },
         id_producto: {
-          bsonType: "long",
+          bsonType: ["int", "null"],
           description: "ID del producto relacionado",
         },
         cantidad: {
-          bsonType: "int",
+          bsonType: ["int", "null"],
           description: "La cantidad en el inventario",
         },
         created_by: {
-          bsonType: "long",
+          bsonType: ["int", "null"],
           description: "ID del creador del inventario",
         },
         updated_by: {
-          bsonType: ["long", "null"],
+          bsonType: ["int", "null"],
           description: "ID del usuario que actualizó el inventario",
         },
         created_at: {
-          bsonType: "date",
+          bsonType: ["date", "null", "string"],
           description: "Fecha de creación del inventario",
         },
         updated_at: {
-          bsonType: ["date", "null"],
+          bsonType: ["date", "null", "string"],
           description: "Fecha de actualización del inventario",
         },
         deleted_at: {
-          bsonType: ["date", "null"],
+          bsonType: ["date", "null", "string"],
           description: "Fecha de eliminación del inventario",
         },
       },
@@ -145,53 +210,10 @@ await db.createCollection("inventarios", {
   },
 });
 
-await db.createCollection("bodegas", {
-  validator: {
-    $jsonSchema: {
-      bsonType: "object",
-      required: ["nombre", "id_responsable", "estado", "created_by"],
-      properties: {
-        id: {
-          bsonType: ["long", "null"],
-          description: "El ID de la bodega",
-        },
-        nombre: {
-          bsonType: ["string", "null"],
-          description: "El nombre de la bodega",
-        },
-        id_responsable: {
-          bsonType: ["long", "null"],
-          description: "ID del responsable de la bodega",
-        },
-        estado: {
-          bsonType: ["int", "null"],
-          description: "El estado de la bodega",
-        },
-        created_by: {
-          bsonType: ["long", "null"],
-          description: "ID del creador de la bodega",
-        },
-        updated_by: {
-          bsonType: ["long", "null"],
-          description: "ID del usuario que actualizó la bodega",
-        },
-        created_at: {
-          bsonType: ["date", "null"],
-          description: "Fecha de creación de la bodega",
-        },
-        updated_at: {
-          bsonType: ["date", "null"],
-          description: "Fecha de actualización de la bodega",
-        },
-        deleted_at: {
-          bsonType: ["date", "null"],
-          description: "Fecha de eliminación de la bodega",
-        },
-      },
-    },
-  },
-});
-
+/* -------------------------------------------------------------------------- */
+/*                                    users                                   */
+/* -------------------------------------------------------------------------- */
+import db from "./conection.js";
 await db.createCollection("users", {
   validator: {
     $jsonSchema: {
@@ -213,7 +235,7 @@ await db.createCollection("users", {
           uniqueItems: true,
         },
         email_verified_at: {
-          bsonType: ["date", "null"],
+          bsonType: "date",
           description: "Fecha de verificación del email",
         },
         estado: {
@@ -225,7 +247,7 @@ await db.createCollection("users", {
           description: "ID del creador del usuario",
         },
         updated_by: {
-          bsonType: ["long", "null"],
+          bsonType: "long",
           description: "ID del usuario que actualizó los datos",
         },
         foto: {
@@ -241,11 +263,11 @@ await db.createCollection("users", {
           description: "Fecha de creación del usuario",
         },
         updated_at: {
-          bsonType: ["date", "null"],
+          bsonType: "date",
           description: "Fecha de actualización del usuario",
         },
         deleted_at: {
-          bsonType: ["date", "null"],
+          bsonType: "date",
           description: "Fecha de eliminación del usuario",
         },
       },
