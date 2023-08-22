@@ -14,7 +14,7 @@ const bodegas = await Bodegas.insertMany(bodegasData());
 import { productosData } from "../../data/productosData.js";
 import db from "./conection.js";
 const Productos = db.collection("productos");
-const productos = await Productos.insertMany(productosData());
+await Productos.insertMany(productosData());
 
 /* -------------------------------------------------------------------------- */
 /*                                 inventarios                                */
@@ -22,7 +22,7 @@ const productos = await Productos.insertMany(productosData());
 import { inventariosData } from "../../data/inventariosData.js";
 import db from "./conection.js";
 const Inventarios = db.collection("inventarios");
-const inventarios = await Inventarios.insertMany(inventariosData());
+await Inventarios.insertMany(inventariosData());
 
 /* -------------------------------------------------------------------------- */
 /*                                 historiales                                */
@@ -128,4 +128,4 @@ const historialesDocs = [
   },
 ];
 const Historiales = db.collection("historiales");
-const historiales = await Historiales.insertMany(historialesDocs);
+await Historiales.insertMany(historialesDocs);
