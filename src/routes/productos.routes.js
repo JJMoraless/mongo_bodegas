@@ -82,4 +82,88 @@ router.post("/", async (req, res) => {
   }
 });
 
+// Realizar un EndPolnt que permita Trasladar unproducto de una bodega a otra
+// • Se debe validar que la cantidad de unidades que se pretende sacar
+// de una Bodega, sea posible, ya que si tengo 1O unidades en la
+// Bodega A, no podré sacar de ella 20 unidades. Esta acción debe
+// generar una alerta e impedir el registro.
+// • Para la afectación de las tablas se debe considerar que del Origen debo
+// restar la cantidad,y
+// al destino le debo sumar lacantidad.
+// Por ejemplo: Bodega A = 1O unidades. Bodega B = 1O unidades. Haré
+// el traslado de 5
+// unidades desde la Bodega A para la Bodega B,Por lo cual el resultado
+// será hacer Updated
+// a los dos registros en inventarios:
+// Bodega A = 5 unidades. Bodega B = 15 unidades. Además hacer un
+// lnsert con toda la
+// información en la tabla de historiales
+
+router.post("/traslado", async (req, res) => {
+  try {
+    const { id_producto, id_bodega_origen, id_bodega_destino, cantidad } =
+      req.body;
+
+    const bodegaOrigenFound = await Inventario.findOne({
+      id_bodega: id_bodega_origen,
+      id_producto,
+    });
+
+    const bodegaDestinoFound = await Inventario.findOne({
+      id_bodega: id_bodega_destino,
+      id_producto,
+    });
+
+    if (!bodegaDestinoFound) {
+      return res.json({
+        ok: false,
+        msg: "bodega destino no tiene ese producto asignado, cree la bodega o asigenle un producto",
+      });
+    }
+
+    if (bodegaOrigenFound.cantidad < cantidad) {
+      return res.json({ ok: false, msg: "cantidad insuficiente" });
+    }
+
+    await Inventario.updateOne(
+      {
+        id_bodega: id_bodega_destino,
+        id_producto,
+      },
+      {
+        $inc: { cantidad: cantidad },
+      }
+    );
+
+    await Inventario.updateOne(
+      {
+        id_bodega: id_bodega_origen,
+        id_producto,
+      },
+      {
+        $inc: { cantidad: -cantidad },
+      }
+    );
+
+    const bodegaDestinoUpdated = await Inventario.findOne({
+      id_bodega: id_bodega_destino,
+      id_producto,
+    });
+
+    res.json({
+      ok: true,
+      bodega_origen: bodegaOrigenFound,
+      bodega_destino: bodegaDestinoFound,
+      cantidad_sacada: cantidad,
+      bodega_destino_actualizada: bodegaDestinoUpdated,
+    });
+  } catch (error) {
+    console.log(
+      "🚀 ~ file: productos.routes.js:22 ~ router.get ~ error:",
+      error
+    );
+    res.status(500).json({ error });
+  }
+});
+
 export { router };
